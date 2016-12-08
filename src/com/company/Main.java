@@ -1,11 +1,9 @@
 package com.company;
 
 import javafx.application.Application;
-
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -14,9 +12,10 @@ import java.sql.Connection;
 public class Main extends Application{
 
     Scene scene1, scene2, scene3, scene4;
-    VBox layout1, layout2, layout3, layout4;
+    VBox homeLayout, employeeLayout, projectLayout, layout4;
     TableView<Employee> employeeTable;
     TableView<Employee_Address> employee_AddressTable;
+    TableView<Employee_Degree> employee_DegreeTable;
     public static Connection connection = Connector.connect();
 
     public static void main(String[] args) {
@@ -36,10 +35,10 @@ public class Main extends Application{
         Button button4 = new Button("Back to main menu");     // We copy the back to main menu button, since javafx can't use 1 button for multiple layouts
         button4.setOnAction(event -> window.setScene(scene1));
 
-        layout1 = new VBox();
+        homeLayout = new VBox();
         Label label = new Label("Welcome to scene 1");
-        layout1.getChildren().addAll(button1,button3);
-        scene1 = new Scene(layout1, 300,300);
+        homeLayout.getChildren().addAll(button1,button3);
+        scene1 = new Scene(homeLayout, 300,300);
 
         // Employee
         TableColumn<Employee, Integer> bsnColumn = new TableColumn<>("BSN");
@@ -64,6 +63,14 @@ public class Main extends Application{
         TableColumn<Employee_Address, String> postalCodeColumn = new TableColumn<>("Postal_Code");
         ColumnCreator.createColumn(postalCodeColumn, "postal_Code");
 
+        // Employee_Degree
+        TableColumn<Employee_Degree, String> degreeBSNColumn = new TableColumn<>("BSN");
+        ColumnCreator.createColumn(degreeBSNColumn, "BSN");
+
+        TableColumn<Employee_Degree, String> degreeIDColumn = new TableColumn<>("Degree ID");
+        ColumnCreator.createColumn(degreeIDColumn, "degreeID");
+
+        // Employee Textfields
         TextField bsnInput = new TextField();
         bsnInput.setPromptText("BSN");
         bsnInput.setMinWidth(100);
@@ -76,12 +83,13 @@ public class Main extends Application{
         surnameInput.setPromptText("Surname");
         surnameInput.setMinWidth(100);
 
-        TextField bsnInputA = new TextField();
-        bsnInputA.setPromptText("BSN");
-
         TextField buildingNameInput = new TextField();
         buildingNameInput.setPromptText("Building Name");
         buildingNameInput.setMinWidth(100);
+
+        // Address Textfields
+        TextField bsnInputA = new TextField();
+        bsnInputA.setPromptText("BSN");
 
         TextField countryInput = new TextField();
         countryInput.setPromptText("Country");
@@ -91,15 +99,29 @@ public class Main extends Application{
         postalInput.setPromptText("Postal_Code");
         postalInput.setMinWidth(100);
 
+        //Degree Textfields
+        TextField bsnInputD = new TextField();
+        bsnInputD.setPromptText("BSN");
+        bsnInputD.setMinWidth(100);
+
+        TextField degreeIDInput = new TextField();
+        degreeIDInput.setPromptText("Degree ID");
+        degreeIDInput.setMinWidth(100);
+
+        TextField degreeIDInputnew = new TextField();
+        degreeIDInputnew.setPromptText("New Degree");
+        degreeIDInputnew.setMinWidth(100);
+
+        // Employee Buttons
         Button addButton = new Button("Add Employee");
         addButton.setOnAction(event ->  Employee.addButtonClicked(Integer.parseInt(bsnInput.getText()), nameInput.getText(), surnameInput.getText(), buildingNameInput.getText()));
 
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button("Delete Employee");
         deleteButton.setOnAction(event -> Employee.deleteButtonClicked(employeeTable));
 
-        Button updateButton = new Button("Update");
+        Button updateButton = new Button("Update Employee");
         updateButton.setOnAction(event -> Employee.updateButtonClicked(Integer.parseInt(bsnInput.getText()),nameInput.getText(), surnameInput.getText(), buildingNameInput.getText()));
-
+        // Address Buttons
         Button addAddressButton = new Button("Add Address");
         addAddressButton.setOnAction(event -> Employee_Address.addButtonClicked(Integer.parseInt(bsnInputA.getText()), countryInput.getText(), postalInput.getText()));
 
@@ -109,6 +131,16 @@ public class Main extends Application{
         Button updateAddressButton = new Button("Update Address");
         updateAddressButton.setOnAction(event -> Employee_Address.updateButtonClicked(Integer.parseInt(bsnInputA.getText()), countryInput.getText(), postalInput.getText()));
 
+        // Degree Buttons
+        Button addDegreeButton = new Button("Add degree");
+        addDegreeButton.setOnAction(event -> Employee_Degree.addButtonClicked(Integer.parseInt(bsnInputD.getText()), Integer.parseInt(degreeIDInput.getText())));
+
+        Button deleteDegreeButton = new Button("Delete degree");
+        deleteDegreeButton.setOnAction(event -> Employee_Degree.deleteButtonClicked(employee_DegreeTable));
+
+        Button updateDegreeButton = new Button("Update degree");
+        updateDegreeButton.setOnAction(event -> Employee_Degree.updateButtonClicked(Integer.parseInt(degreeIDInputnew.getText()), Integer.parseInt(bsnInputD.getText()), Integer.parseInt(degreeIDInput.getText())));
+
         HBox employeeHbox = new HBox();
         employeeHbox.setPadding(new Insets(10));
         employeeHbox.setSpacing(10);
@@ -117,6 +149,9 @@ public class Main extends Application{
         HBox addressHBox = new HBox();
         addressHBox.getChildren().addAll(bsnInputA, countryInput, postalInput, addAddressButton, deleteAddressButton, updateAddressButton);
 
+        HBox degreeHBox = new HBox();
+        degreeHBox.getChildren().addAll(bsnInputD, degreeIDInput, degreeIDInputnew, addDegreeButton, deleteDegreeButton, updateDegreeButton);
+
         employeeTable = new TableView<>();
         employeeTable.setItems(Employee.getEmployees());
         employeeTable.getColumns().addAll(bsnColumn, nameColumn, surNameColumn, buildingNameColumn);
@@ -124,13 +159,18 @@ public class Main extends Application{
         employee_AddressTable = new TableView<>();
         employee_AddressTable.setItems(Employee_Address.getEmployeesAddress());
         employee_AddressTable.getColumns().addAll(addressBSNColumn, countryColumn, postalCodeColumn);
-        layout2 = new VBox();
-        layout2.getChildren().addAll(button2, employeeTable, employeeHbox, employee_AddressTable, addressHBox);
-        scene2 = new Scene(layout2, 500, 500);
 
-        layout3 = new VBox();
-        layout3.getChildren().addAll(button4);
-        scene3 = new Scene(layout3, 500, 500);
+        employee_DegreeTable = new TableView<>();
+        employee_DegreeTable.setItems(Employee_Degree.getEmployee_degrees());
+        employee_DegreeTable.getColumns().addAll(degreeBSNColumn, degreeIDColumn);
+
+        employeeLayout = new VBox();
+        employeeLayout.getChildren().addAll(button2, employeeTable, employeeHbox, employee_AddressTable, addressHBox, employee_DegreeTable, degreeHBox);
+        scene2 = new Scene(employeeLayout, 500, 500);
+
+        projectLayout = new VBox();
+        projectLayout.getChildren().addAll(button4);
+        scene3 = new Scene(projectLayout, 500, 500);
 
         window.setScene(scene1);
 
