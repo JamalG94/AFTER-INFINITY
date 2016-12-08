@@ -55,11 +55,11 @@ public class Main extends Application{
         ColumnCreator.createColumn(buildingNameColumn, "building_Name");
 
         // Employee_Address
-        TableColumn<Employee_Address, String> countryColumn = new TableColumn<>("Country");
-        ColumnCreator.createColumn(countryColumn, "country");
-
         TableColumn<Employee_Address, String> addressBSNColumn = new TableColumn<>("BSN");
         ColumnCreator.createColumn(addressBSNColumn, "BSN");
+
+        TableColumn<Employee_Address, String> countryColumn = new TableColumn<>("Country");
+        ColumnCreator.createColumn(countryColumn, "country");
 
         TableColumn<Employee_Address, String> postalCodeColumn = new TableColumn<>("Postal_Code");
         ColumnCreator.createColumn(postalCodeColumn, "postal_Code");
@@ -76,6 +76,9 @@ public class Main extends Application{
         surnameInput.setPromptText("Surname");
         surnameInput.setMinWidth(100);
 
+        TextField bsnInputA = new TextField();
+        bsnInputA.setPromptText("BSN");
+
         TextField buildingNameInput = new TextField();
         buildingNameInput.setPromptText("Building Name");
         buildingNameInput.setMinWidth(100);
@@ -88,7 +91,7 @@ public class Main extends Application{
         postalInput.setPromptText("Postal_Code");
         postalInput.setMinWidth(100);
 
-        Button addButton = new Button("Add");
+        Button addButton = new Button("Add Employee");
         addButton.setOnAction(event ->  Employee.addButtonClicked(Integer.parseInt(bsnInput.getText()), nameInput.getText(), surnameInput.getText(), buildingNameInput.getText()));
 
         Button deleteButton = new Button("Delete");
@@ -97,10 +100,22 @@ public class Main extends Application{
         Button updateButton = new Button("Update");
         updateButton.setOnAction(event -> Employee.updateButtonClicked(Integer.parseInt(bsnInput.getText()),nameInput.getText(), surnameInput.getText(), buildingNameInput.getText()));
 
-        HBox hBox1 = new HBox();
-        hBox1.setPadding(new Insets(10));
-        hBox1.setSpacing(10);
-        hBox1.getChildren().addAll(bsnInput, nameInput, surnameInput, buildingNameInput, addButton, deleteButton, updateButton);
+        Button addAddressButton = new Button("Add Address");
+        addAddressButton.setOnAction(event -> Employee_Address.addButtonClicked(Integer.parseInt(bsnInputA.getText()), countryInput.getText(), postalInput.getText()));
+
+        Button deleteAddressButton = new Button("Delete Address");
+        deleteAddressButton.setOnAction(event -> Employee_Address.deleteButtonClicked(employee_AddressTable));
+
+        Button updateAddressButton = new Button("Update Address");
+        updateAddressButton.setOnAction(event -> Employee_Address.updateButtonClicked(Integer.parseInt(bsnInputA.getText()), countryInput.getText(), postalInput.getText()));
+
+        HBox employeeHbox = new HBox();
+        employeeHbox.setPadding(new Insets(10));
+        employeeHbox.setSpacing(10);
+        employeeHbox.getChildren().addAll(bsnInput, nameInput, surnameInput, buildingNameInput, addButton, deleteButton, updateButton);
+
+        HBox addressHBox = new HBox();
+        addressHBox.getChildren().addAll(bsnInputA, countryInput, postalInput, addAddressButton, deleteAddressButton, updateAddressButton);
 
         employeeTable = new TableView<>();
         employeeTable.setItems(Employee.getEmployees());
@@ -110,7 +125,7 @@ public class Main extends Application{
         employee_AddressTable.setItems(Employee_Address.getEmployeesAddress());
         employee_AddressTable.getColumns().addAll(addressBSNColumn, countryColumn, postalCodeColumn);
         layout2 = new VBox();
-        layout2.getChildren().addAll(button2, employeeTable, employee_AddressTable, hBox1);
+        layout2.getChildren().addAll(button2, employeeTable, employeeHbox, employee_AddressTable, addressHBox);
         scene2 = new Scene(layout2, 500, 500);
 
         layout3 = new VBox();
@@ -118,6 +133,7 @@ public class Main extends Application{
         scene3 = new Scene(layout3, 500, 500);
 
         window.setScene(scene1);
+
         window.show();
     }
 }

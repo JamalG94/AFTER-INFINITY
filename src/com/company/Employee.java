@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import static com.company.Employee_Address.employeeAddress;
+import static com.company.Employee_Address.getEmployeesAddress;
+
 
 public class Employee  {
     private int BSN;
@@ -79,7 +82,8 @@ public class Employee  {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, BSN);
             statement.execute();
-
+            employeeAddress.removeAll();
+            getEmployeesAddress();
         }
         catch (Exception e){
             System.out.println(e);
