@@ -8,9 +8,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import static com.company.Main.connection;
 
-/**
- * Created by Jamal on 8-12-2016.
- */
 public class Employee_Degree {
     int degreeID;
     int BSN;
@@ -21,6 +18,7 @@ public class Employee_Degree {
         this.BSN = BSN;
 
     }
+
     public static ObservableList<Employee_Degree> getEmployee_degrees() {
         Statement statement;
         String sql;

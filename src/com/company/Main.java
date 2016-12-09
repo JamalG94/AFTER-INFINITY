@@ -16,6 +16,7 @@ public class Main extends Application{
     TableView<Employee> employeeTable;
     TableView<Employee_Address> employee_AddressTable;
     TableView<Employee_Degree> employee_DegreeTable;
+    TableView<Employee_Position> employee_PositionTable;
     public static Connection connection = Connector.connect();
 
     public static void main(String[] args) {
@@ -70,6 +71,16 @@ public class Main extends Application{
         TableColumn<Employee_Degree, String> degreeIDColumn = new TableColumn<>("Degree ID");
         ColumnCreator.createColumn(degreeIDColumn, "degreeID");
 
+        // Employee_Position
+        TableColumn<Employee_Position, String> positionBSNColumn = new TableColumn<>("BSN");
+        ColumnCreator.createColumn(positionBSNColumn, "BSN");
+
+        TableColumn<Employee_Position, String> positionNameColumn = new TableColumn<>("Position Name");
+        ColumnCreator.createColumn(positionNameColumn, "position_Name");
+
+        TableColumn<Employee_Position, String> positionhours = new TableColumn<>("Hours");
+        ColumnCreator.createColumn(positionhours, "hours");
+
         // Employee Textfields
         TextField bsnInput = new TextField();
         bsnInput.setPromptText("BSN");
@@ -99,6 +110,11 @@ public class Main extends Application{
         postalInput.setPromptText("Postal_Code");
         postalInput.setMinWidth(100);
 
+        TextField newpostalInput = new TextField();
+        newpostalInput.setPromptText("New Postal_Code");
+        newpostalInput.setMinWidth(100);
+
+
         //Degree Textfields
         TextField bsnInputD = new TextField();
         bsnInputD.setPromptText("BSN");
@@ -111,6 +127,23 @@ public class Main extends Application{
         TextField degreeIDInputnew = new TextField();
         degreeIDInputnew.setPromptText("New Degree");
         degreeIDInputnew.setMinWidth(100);
+
+        //Position Textfields
+        TextField bsnInputP = new TextField();
+        bsnInputP.setPromptText("BSN");
+        bsnInputP.setMinWidth(100);
+
+        TextField positionInput = new TextField();
+        positionInput.setPromptText("Position Name");
+        positionInput.setMinWidth(100);
+
+        TextField hoursInput = new TextField();
+        hoursInput.setPromptText("Hours");
+        hoursInput.setMinWidth(100);
+
+        TextField newPositionInput = new TextField();
+        newPositionInput.setPromptText("New Position");
+        newPositionInput.setMinWidth(100);
 
         // Employee Buttons
         Button addButton = new Button("Add Employee");
@@ -129,7 +162,7 @@ public class Main extends Application{
         deleteAddressButton.setOnAction(event -> Employee_Address.deleteButtonClicked(employee_AddressTable));
 
         Button updateAddressButton = new Button("Update Address");
-        updateAddressButton.setOnAction(event -> Employee_Address.updateButtonClicked(Integer.parseInt(bsnInputA.getText()), countryInput.getText(), postalInput.getText()));
+        updateAddressButton.setOnAction(event -> Employee_Address.updateButtonClicked(Integer.parseInt(bsnInputA.getText()), countryInput.getText(), postalInput.getText(), newpostalInput.getText()));
 
         // Degree Buttons
         Button addDegreeButton = new Button("Add degree");
@@ -141,16 +174,30 @@ public class Main extends Application{
         Button updateDegreeButton = new Button("Update degree");
         updateDegreeButton.setOnAction(event -> Employee_Degree.updateButtonClicked(Integer.parseInt(degreeIDInputnew.getText()), Integer.parseInt(bsnInputD.getText()), Integer.parseInt(degreeIDInput.getText())));
 
+        // Position Buttons
+        Button addPositionButton = new Button("Add position");
+        addPositionButton.setOnAction(event -> Employee_Position.addButtonClicked(Integer.parseInt(bsnInputP.getText()), Integer.parseInt(hoursInput.getText()), positionInput.getText()));
+
+        Button deletePositionButton = new Button("Delete position");
+        deletePositionButton.setOnAction(event -> Employee_Position.deleteButtonClicked(employee_PositionTable));
+
+        Button updatePositionButton = new Button("Update position");
+        updatePositionButton.setOnAction(event -> Employee_Position.updateButtonClicked(Integer.parseInt(hoursInput.getText()),newPositionInput.getText(),
+                Integer.parseInt(bsnInputP.getText()), positionInput.getText()));
+
         HBox employeeHbox = new HBox();
         employeeHbox.setPadding(new Insets(10));
         employeeHbox.setSpacing(10);
         employeeHbox.getChildren().addAll(bsnInput, nameInput, surnameInput, buildingNameInput, addButton, deleteButton, updateButton);
 
         HBox addressHBox = new HBox();
-        addressHBox.getChildren().addAll(bsnInputA, countryInput, postalInput, addAddressButton, deleteAddressButton, updateAddressButton);
+        addressHBox.getChildren().addAll(bsnInputA, countryInput, postalInput, newpostalInput, addAddressButton, deleteAddressButton, updateAddressButton);
 
         HBox degreeHBox = new HBox();
         degreeHBox.getChildren().addAll(bsnInputD, degreeIDInput, degreeIDInputnew, addDegreeButton, deleteDegreeButton, updateDegreeButton);
+
+        HBox positionHbox = new HBox();
+        positionHbox.getChildren().addAll(bsnInputP, hoursInput, positionInput, newPositionInput, addPositionButton, deletePositionButton, updatePositionButton);
 
         employeeTable = new TableView<>();
         employeeTable.setItems(Employee.getEmployees());
@@ -164,8 +211,12 @@ public class Main extends Application{
         employee_DegreeTable.setItems(Employee_Degree.getEmployee_degrees());
         employee_DegreeTable.getColumns().addAll(degreeBSNColumn, degreeIDColumn);
 
+        employee_PositionTable = new TableView<>();
+        employee_PositionTable.setItems(Employee_Position.getEmployeePositions());
+        employee_PositionTable.getColumns().addAll(positionBSNColumn, positionhours, positionNameColumn);
+
         employeeLayout = new VBox();
-        employeeLayout.getChildren().addAll(button2, employeeTable, employeeHbox, employee_AddressTable, addressHBox, employee_DegreeTable, degreeHBox);
+        employeeLayout.getChildren().addAll(button2, employeeTable, employeeHbox, employee_AddressTable, addressHBox, employee_DegreeTable, degreeHBox, employee_PositionTable, positionHbox);
         scene2 = new Scene(employeeLayout, 500, 500);
 
         projectLayout = new VBox();

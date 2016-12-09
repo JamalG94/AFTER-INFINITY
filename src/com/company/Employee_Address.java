@@ -110,7 +110,7 @@ public class Employee_Address{
         }
     }
 
-    public static void updateButtonClicked(int bsn, String country, String postal_Code) {
+    public static void updateButtonClicked(int bsn, String country, String oldpostal_Code, String newpostal_Code) {
         String sql;
         PreparedStatement statement;
         int i;
@@ -118,11 +118,13 @@ public class Employee_Address{
             sql = "UPDATE Employee_Address"
                     + " SET country = (?)"
                     + ", postal_code = (?)"
-                    + " WHERE bsn = (?)";
+                    + " WHERE bsn = (?)"
+                    +  " AND postal_code = (?)";
             statement = connection.prepareStatement(sql);
             statement.setString(1, country);
-            statement.setString(2, postal_Code);
+            statement.setString(2, newpostal_Code);
             statement.setInt(3, bsn);
+            statement.setString(4, oldpostal_Code);
             statement.execute();
             int size = employeeAddress.size();
             for(i = 0; i < size; i++){
