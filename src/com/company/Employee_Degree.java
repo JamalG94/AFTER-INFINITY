@@ -44,7 +44,7 @@ public class Employee_Degree {
         PreparedStatement statement;
         try{
             sql = "INSERT INTO EMPLOYEE_DEGREE"
-                    + "(degree_id, BSN)"
+                    + "(degree_id, project_hq)"
                     + "VALUES(?,?)";
             statement = connection.prepareStatement(sql);
             statement.setInt(1, degreeID);
