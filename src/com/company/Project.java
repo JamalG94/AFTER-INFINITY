@@ -18,6 +18,7 @@ public class Project {
     int budget;
     int allocated_hours;
     static ObservableList<Project> projects = FXCollections.observableArrayList();
+    static ObservableList<Project> wrongProjects = FXCollections.observableArrayList();
     static Connection connection = Main.connection;
 
     public Project(int project_id, String project_hq, int budget, int allocated_hours) {
@@ -51,6 +52,30 @@ public class Project {
         return projects;
     }
 
+    public static ObservableList<Project> getWrongProjects(){
+        ResultSet resultSet;
+        Statement statement;
+        String sql;
+
+        try{
+            sql = "SELECT * FROM project p, headquarter hq " +
+                    "WHERE p.project_headquarter = hq.building_name " +
+                    "AND p.budget >= (hq.montly_rent / 10);";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                int project_id = resultSet.getInt(1);
+                String project_hq = resultSet.getString(2);
+                int budget = resultSet.getInt(3);
+                int allocated_hours = resultSet.getInt(4);
+                wrongProjects.add(new Project(project_id, project_hq, budget, allocated_hours));
+            }
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        return wrongProjects;
+    }
+
     public static void addButtonClicked(int project_id, String project_hq, int budget, int allocated_hours){
         String sql;
         PreparedStatement statement;
@@ -58,7 +83,7 @@ public class Project {
         try{
             sql = "INSERT INTO PROJECT"
                     + "(project_id, project_headquarter, budget, allocated_hours)"
-                    + "VALUES(?,?,?)";
+                    + "VALUES(?,?,?,?)";
             statement = connection.prepareStatement(sql);
             statement.setInt(1, project_id);
             statement.setString(2, project_hq);
@@ -119,6 +144,8 @@ public class Project {
             System.out.println(e);
         }
     }
+
+
 
     public int getProject_id() {
         return project_id;

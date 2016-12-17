@@ -56,7 +56,7 @@ public class Employee_Position {
 
         try{
             sql = "INSERT INTO EMPLOYEE_POSITION"
-                    + "(position_name, bsn, project_id)"
+                    + "(position_name, bsn, hours)"
                     + "VALUES(?,?,?)";
             statement = connection.prepareStatement(sql);
             statement.setString(1, position_Name);

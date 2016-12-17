@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.sql.Connection;
 
@@ -17,6 +18,8 @@ public class Main extends Application{
     TableView<Employee_Address> employee_AddressTable;
     TableView<Employee_Degree> employee_DegreeTable;
     TableView<Employee_Position> employee_PositionTable;
+    TableView<Project_Position> project_positionTable;
+    TableView<Project> wrongProjectsTable;
     TableView<Address> addressTable;
     TableView<Project> projectTable;
     public static Connection connection = Connector.connect();
@@ -31,7 +34,7 @@ public class Main extends Application{
 
         Button button1 = new Button("Get access to employee data");
         Button button3 = new Button("Get access to address data");
-        Button button6 = new Button("Get access to proejct data");
+        Button button6 = new Button("Get access to project data");
         button3.setOnAction(event -> window.setScene(scene5));
         button1.setOnAction(event -> window.setScene(scene2));
         button6.setOnAction(event -> window.setScene(scene3));
@@ -48,8 +51,8 @@ public class Main extends Application{
         scene1 = new Scene(homeLayout, 300,300);
 
         // Employee
-        TableColumn<Employee, Integer> bsnColumn = new TableColumn<>("project_hq");
-        ColumnCreator.createColumn(bsnColumn, "project_hq");
+        TableColumn<Employee, Integer> bsnColumn = new TableColumn<>("BSN");
+        ColumnCreator.createColumn(bsnColumn, "BSN");
 
         TableColumn<Employee, String> nameColumn = new TableColumn<>("Name");
         ColumnCreator.createColumn(nameColumn, "Name");
@@ -61,8 +64,8 @@ public class Main extends Application{
         ColumnCreator.createColumn(buildingNameColumn, "building_Name");
 
         // Employee_Address
-        TableColumn<Employee_Address, String> addressBSNColumn = new TableColumn<>("project_hq");
-        ColumnCreator.createColumn(addressBSNColumn, "project_hq");
+        TableColumn<Employee_Address, String> addressBSNColumn = new TableColumn<>("BSN");
+        ColumnCreator.createColumn(addressBSNColumn, "BSN");
 
         TableColumn<Employee_Address, String> countryColumn = new TableColumn<>("Country");
         ColumnCreator.createColumn(countryColumn, "country");
@@ -71,15 +74,15 @@ public class Main extends Application{
         ColumnCreator.createColumn(postalCodeColumn, "postal_Code");
 
         // Employee_Degree
-        TableColumn<Employee_Degree, String> degreeBSNColumn = new TableColumn<>("project_hq");
-        ColumnCreator.createColumn(degreeBSNColumn, "project_hq");
+        TableColumn<Employee_Degree, String> degreeBSNColumn = new TableColumn<>("BSN");
+        ColumnCreator.createColumn(degreeBSNColumn, "BSN");
 
         TableColumn<Employee_Degree, String> degreeIDColumn = new TableColumn<>("Degree ID");
         ColumnCreator.createColumn(degreeIDColumn, "degreeID");
 
         // Employee_Position
-        TableColumn<Employee_Position, String> positionBSNColumn = new TableColumn<>("project_hq");
-        ColumnCreator.createColumn(positionBSNColumn, "project_hq");
+        TableColumn<Employee_Position, String> positionBSNColumn = new TableColumn<>("BSN");
+        ColumnCreator.createColumn(positionBSNColumn, "BSN");
 
         TableColumn<Employee_Position, String> positionNameColumn = new TableColumn<>("Position Name");
         ColumnCreator.createColumn(positionNameColumn, "budget");
@@ -104,11 +107,11 @@ public class Main extends Application{
         ColumnCreator.createColumn(addressStreetNumber, "Street Number");
 
         // Project
-        TableColumn<Project, String> projectHqColumn = new TableColumn<>("Headquarter");
-        ColumnCreator.createColumn(projectHqColumn, "Headquarter");
-
         TableColumn<Project, Integer> projectIdColumn = new TableColumn<>("ID");
         ColumnCreator.createColumn(projectIdColumn, "ID");
+
+        TableColumn<Project, String> projectHqColumn = new TableColumn<>("Headquarter");
+        ColumnCreator.createColumn(projectHqColumn, "Headquarter");
 
         TableColumn<Project, Integer> projectBudgetColumn = new TableColumn<>("Budget");
         ColumnCreator.createColumn(projectBudgetColumn, "Budget");
@@ -116,10 +119,29 @@ public class Main extends Application{
         TableColumn<Project, Integer> projectHoursColumn = new TableColumn<>("Allocated hours");
         ColumnCreator.createColumn(projectHoursColumn, "Allocated hours");
 
+        // Project_Position
+        TableColumn<Project_Position, Integer> projectIdColumnA = new TableColumn<>("Project ID");
+        ColumnCreator.createColumn(projectIdColumnA, "Project ID");
+
+        TableColumn<Project_Position, String> positionNameColumnA = new TableColumn<>("Position Name");
+        ColumnCreator.createColumn(positionNameColumnA, "Position Name");
+
+        // Wrong Projects
+        TableColumn<Project, Integer> projectIdColumnW = new TableColumn<>("ID");
+        ColumnCreator.createColumn(projectIdColumn, "ID");
+
+        TableColumn<Project, String> projectHqColumnW = new TableColumn<>("Headquarter");
+        ColumnCreator.createColumn(projectHqColumn, "Headquarter");
+
+        TableColumn<Project, Integer> projectBudgetColumnW = new TableColumn<>("Budget");
+        ColumnCreator.createColumn(projectBudgetColumn, "Budget");
+
+        TableColumn<Project, Integer> projectHoursColumnW = new TableColumn<>("Allocated hours");
+        ColumnCreator.createColumn(projectHoursColumn, "Allocated hours");
 
         // Employee Textfields
         TextField bsnInput = new TextField();
-        bsnInput.setPromptText("project_hq");
+        bsnInput.setPromptText("BSN");
         bsnInput.setMinWidth(100);
 
         TextField nameInput = new TextField();
@@ -136,7 +158,7 @@ public class Main extends Application{
 
         // EmployeeAddress Textfields
         TextField bsnInputA = new TextField();
-        bsnInputA.setPromptText("project_hq");
+        bsnInputA.setPromptText("BSN");
         bsnInputA.setMinWidth(100);
 
         TextField countryInput = new TextField();
@@ -154,7 +176,7 @@ public class Main extends Application{
 
         //Degree Textfields
         TextField bsnInputD = new TextField();
-        bsnInputD.setPromptText("project_hq");
+        bsnInputD.setPromptText("BSN");
         bsnInputD.setMinWidth(100);
 
         TextField degreeIDInput = new TextField();
@@ -167,7 +189,7 @@ public class Main extends Application{
 
         //Position Textfields
         TextField bsnInputP = new TextField();
-        bsnInputP.setPromptText("project_hq");
+        bsnInputP.setPromptText("BSN");
         bsnInputP.setMinWidth(100);
 
         TextField positionInput = new TextField();
@@ -219,6 +241,15 @@ public class Main extends Application{
         TextField projectHoursInput = new TextField();
         projectHoursInput.setPromptText("Allocated hours");
         projectHoursInput.setMinWidth(100);
+
+        // Project_Position Text Fields
+        TextField projectIDinputA = new TextField();
+        projectIDinputA.setPromptText("Project Id");
+        projectIDinputA.setMinWidth(100);
+
+        TextField positionNameInput = new TextField();
+        positionNameInput.setPromptText("Position Name");
+        positionNameInput.setMinWidth(100);
 
         // Employee Buttons
         Button addButton = new Button("Add Employee");
@@ -277,6 +308,13 @@ public class Main extends Application{
         Button updateProjectButton = new Button("Update project");
         updateProjectButton.setOnAction(event -> Project.updateButtonClicked(Integer.parseInt(projectIDInput.getText()), projectHeadquarterInput.getText(), Integer.parseInt(projectBudgetInput.getText()), Integer.parseInt(projectHoursInput.getText())));
 
+        // Project_Position Buttons
+        Button addProjectPositionButton = new Button("add Project Position");
+        addProjectPositionButton.setOnAction(event -> Project_Position.addButtonClicked(Integer.parseInt(projectIDinputA.getText()), positionNameInput.getText()));
+
+        Button deleteProjectPositionButton = new Button("delete Project Position");
+        deleteProjectPositionButton.setOnAction(event -> Project_Position.deleteButtonClicked(project_positionTable));
+
         HBox employeeHbox = new HBox();
         employeeHbox.setPadding(new Insets(10));
         employeeHbox.setSpacing(10);
@@ -296,6 +334,9 @@ public class Main extends Application{
 
         HBox projectHBox = new HBox();
         projectHBox.getChildren().addAll(projectIDInput, projectHeadquarterInput, projectBudgetInput, projectHoursInput, addProjectButton, deleteProjectButton, updateProjectButton);
+
+        HBox projectPositionHBox = new HBox();
+        projectPositionHBox.getChildren().addAll(projectIDinputA, positionNameInput, addProjectPositionButton, deleteProjectPositionButton);
 
 
         employeeTable = new TableView<>();
@@ -322,16 +363,25 @@ public class Main extends Application{
         projectTable.setItems(Project.getProjects());
         projectTable.getColumns().addAll(projectIdColumn, projectHqColumn, projectBudgetColumn, projectHoursColumn);
 
+        project_positionTable = new TableView<>();
+        project_positionTable.setItems(Project_Position.getProjectPositions());
+        project_positionTable.getColumns().addAll(projectIdColumnA, positionNameColumnA);
+
+        wrongProjectsTable = new TableView<>();
+        wrongProjectsTable.setItems(Project.getWrongProjects());
+        wrongProjectsTable.getColumns().addAll(projectIdColumnW, projectHqColumnW, projectBudgetColumnW, projectHoursColumnW);
+
+
         employeeLayout = new VBox();
         employeeLayout.getChildren().addAll(button2, employeeTable, employeeHbox, employee_AddressTable, addressHBox, employee_DegreeTable, degreeHBox, employee_PositionTable, positionHbox);
         scene2 = new Scene(employeeLayout, 500, 500);
 
         projectLayout = new VBox();
-        projectLayout.getChildren().addAll(button4, projectTable, projectHBox);
+        projectLayout.getChildren().addAll(button4, projectTable, projectHBox, project_positionTable, projectPositionHBox, wrongProjectsTable);
         scene3 = new Scene(projectLayout, 500, 500);
 
         addressLayout = new VBox();
-        addressLayout.getChildren().addAll(button2, addressTable, addressHBoxA);
+        addressLayout.getChildren().addAll(button5, addressTable, addressHBoxA);
         scene5 = new Scene(addressLayout, 500, 500);
 
         window.setScene(scene1);
